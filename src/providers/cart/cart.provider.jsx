@@ -1,7 +1,11 @@
 
 import React, { createContext, useState, useEffect } from 'react';
 
-import { addItemToCart, removeItemFromCart } from './cart.utils';
+import { 
+    addItemToCart, 
+    removeItemFromCart,
+     filterItemFromCart,
+    getCartItemsCount } from './cart.utils';
 
 
 export const CartContext = createContext({
@@ -19,9 +23,15 @@ const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState([]);
     const[cartItemsCount, setCartItemsCount] = useState(0);
 
-    const addItem = setCartItems(addItemToCart(cartItems, item))
+    const addItem = item => setCartItems(addItemToCart(cartItems, item))
+    const removeItem = item => setCartItems(addItemToCart(cartItems, item))
 
     const toggleHidden = () => setHidden(!hidden);
+    const clearItemFromCart = item => setCartItems(filterItemFromCart(cartItems, item))
+
+    useEffect(() => {
+        setCartItemsCount(getCartItemsCount(cartItems))
+    }, [cartItems])
     return (
         <CartContext.Provider 
         value={{
@@ -29,7 +39,9 @@ const CartProvider = ({ children }) => {
             toggleHidden,
             cartItems,
             addItem,
-            cartItemsCount
+            removeItem,
+            cartItemsCount,
+            clearItemFromCart
         }}
         >
             {children}

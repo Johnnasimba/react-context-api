@@ -1,3 +1,5 @@
+import { bindActionCreators } from "redux";
+
 export const addItemToCart = (cartItems, cartItemToAdd) => {
   const existingCartItem = cartItems.find(
     cartItem => cartItem.id === cartItemToAdd.id
@@ -29,3 +31,12 @@ export const removeItemFromCart = (cartItems, cartItemToRemove) => {
       : cartItem
   );
 };
+
+export const filterItemFromCart = (cartItems, item) => cartItems.filter(
+  cartItem => cartItem.id !== item.id
+)
+export const getCartItemsCount = cartItems => cartItems.reduce(
+  (accumalatedQuantity, cartItem) =>
+    accumalatedQuantity + cartItem.quantity * cartItem.price,
+  0
+)
